@@ -2,73 +2,56 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const UserService = require('../lib/services/UserService');
 
-describe('backend-express-template routes', () => {
+describe('backend-express-template routes', async () => {
   beforeEach(() => {
     return setup(pool);
   });
 
-  it('users can signup with email and password with POST', async() => {
-    const res = await request(app)
-      .post('/api/v1/users')
-      .send({ 
-        email: 'bob@bob.com', 
-        password: 'bobbob' 
-      });
+  const agent = request.agent(app);
 
-    expect(res.body).toEqual({
-      id: expect.any(String), 
-      email: 'bob@bob.com'
-    });
-  });
+  const expected = [
+    { 
+      id: expect.any(String),
+      title: 'My birds name', 
+      description: 'Steve',
+      createdAt: expect.any(String)
+    },
+    { 
+      id: expect.any(String),
+      title: 'My dogs name', 
+      description: 'Fido',
+      createdAt: expect.any(String)
+    }
+  ];
 
-  it('signs in an existing user', async() => {
-    //first we sign up a user
-    const user = await UserService.hash({
+  let res = await agent
+    .get('/api/v1/secrets');
+
+  // Should get "unauthenticated"
+  expect(res.status).toEqual(401);
+
+  // create a user
+  await agent
+    .post('/api/v1/users')
+    .send({ 
       email: 'bob@bob.com', 
-      password: 'bobbob'
-    });
-
-    //then we test signing in the user
-    const res = await request(app)
-      .post('/api/v1/users/sessions')
-      .send({
-        email: 'bob@bob.com',
-        password: 'bobbob'
-      });
-
-    expect(res.body).toEqual({
-      message: 'Signed in successfully',
-      user,
-    });
-  });
-
-
-  it('logs out a user', async() => {
-
-    await UserService.hash({
-      email: 'bob2@bob.com', 
-      password: 'bobbob'
+      password: 'bobbob' 
     });
 
 
-    await request(app)
-      .post('/api/v1/users/sessions')
-      .send({
-        email: 'bob2@bob.com',
-        password: 'bobbob'
-      });
-
-    const res = await request(app)
-      .delete('/api/v1/users/sessions');
-    
-
-    expect(res.body).toEqual({
-      success: true, 
-      message: 'Signed out successfully!'
+  //sign in user
+  await agent
+    .post('/api/v1/users/sessions')
+    .send({ 
+      email: 'bob@bob.com', 
+      password: 'bobbob' 
     });
-  });
+
+  res = await agent 
+    .get('/api/v1/secrets');
+
+  expect(res.body).toEqual(expected);
 
   afterAll(() => {
     pool.end();
