@@ -44,7 +44,7 @@ describe('top-secrets-backend routes', () => {
     await agent
       .post('/api/v1/users')
       .send({ 
-        email: 'bob@bob.com', 
+        email: 'bob@defense.gov', 
         password: 'bobbob' 
       });
 
@@ -53,7 +53,7 @@ describe('top-secrets-backend routes', () => {
     await agent
       .post('/api/v1/users/sessions')
       .send({ 
-        email: 'bob@bob.com', 
+        email: 'bob@defense.gov', 
         password: 'bobbob' 
       });
 
@@ -89,7 +89,7 @@ describe('top-secrets-backend routes', () => {
     await agent
       .post('/api/v1/users')
       .send({ 
-        email: 'bob@bob.com', 
+        email: 'bob@defense.gov', 
         password: 'bobbob' 
       });
 
@@ -97,7 +97,7 @@ describe('top-secrets-backend routes', () => {
     await agent
       .post('/api/v1/users/sessions')
       .send({ 
-        email: 'bob@bob.com', 
+        email: 'bob@defense.gov', 
         password: 'bobbob' 
       });
 

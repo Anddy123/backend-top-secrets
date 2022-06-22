@@ -13,20 +13,20 @@ describe('backend-express-template routes', () => {
     const res = await request(app)
       .post('/api/v1/users')
       .send({ 
-        email: 'bob@bob.com', 
+        email: 'bob@defense.gov', 
         password: 'bobbob' 
       });
 
     expect(res.body).toEqual({
       id: expect.any(String), 
-      email: 'bob@bob.com'
+      email: 'bob@defense.gov'
     });
   });
 
   it('signs in an existing user', async() => {
     //first we sign up a user
     await UserService.hash({
-      email: 'bob@bob.com', 
+      email: 'bob@defense.gov', 
       password: 'bobbob'
     });
 
@@ -34,7 +34,7 @@ describe('backend-express-template routes', () => {
     const res = await request(app)
       .post('/api/v1/users/sessions')
       .send({
-        email: 'bob@bob.com',
+        email: 'bob@defense.gov',
         password: 'bobbob'
       });
 
@@ -45,7 +45,7 @@ describe('backend-express-template routes', () => {
   it('logs out a user', async() => {
 
     await UserService.hash({
-      email: 'bob2@bob.com', 
+      email: 'bob2@defense.gov', 
       password: 'bobbob'
     });
 
@@ -53,7 +53,7 @@ describe('backend-express-template routes', () => {
     await request(app)
       .post('/api/v1/users/sessions')
       .send({
-        email: 'bob2@bob.com',
+        email: 'bob2@defense.gov',
         password: 'bobbob'
       });
 
