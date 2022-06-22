@@ -23,7 +23,7 @@ describe('backend-express-template routes', () => {
     });
   });
 
-  it('signs in an existing user', async() => {
+  xit('signs in an existing user', async() => {
     //first we sign up a user
     const user = await UserService.hash({
       email: 'bob@bob.com', 
@@ -45,7 +45,7 @@ describe('backend-express-template routes', () => {
   });
 
 
-  it('logs out a user', async() => {
+  xit('logs out a user', async() => {
 
     await UserService.hash({
       email: 'bob2@bob.com', 
