@@ -32,14 +32,6 @@ describe('top-secrets-backend routes', () => {
       }
     ];
 
-    // Test authentication for the endpoint
-    // No user signed in:
-    let res = await agent
-      .get('/api/v1/secrets');
-
-    // Should get "unauthenticated" status
-    expect(res.status).toEqual(401);
-
     // create a user
     await agent
       .post('/api/v1/users')
@@ -57,7 +49,7 @@ describe('top-secrets-backend routes', () => {
         password: 'bobbob' 
       });
 
-    res = await agent 
+    const res = await agent 
       .get('/api/v1/secrets');
 
     expect(res.body).toEqual(expected);
@@ -74,17 +66,6 @@ describe('top-secrets-backend routes', () => {
         createdAt: expect.any(String)
       };
 
-    // TEST ENDPOINT FOR NO USER SIGNED IN
-    let res = await agent 
-      .post('/api/v1/secrets')
-      .send({ 
-        title: 'My big secret', 
-        description: 'I love money',
-      });
-
-    // Should get "unauthenticated" status
-    expect(res.status).toEqual(401);
-
     // create a user
     await agent
       .post('/api/v1/users')
@@ -102,7 +83,7 @@ describe('top-secrets-backend routes', () => {
       });
 
 
-    res = await agent 
+    const res = await agent 
       .post('/api/v1/secrets')
       .send({ 
         title: 'My big secret', 
@@ -112,5 +93,4 @@ describe('top-secrets-backend routes', () => {
     expect(res.body).toEqual(expected);
 
   });
-
 });
